@@ -20,18 +20,19 @@ app.use(express.json());
 
 const todoRoutes = require("./todoRouter");
 const userRotes = require("./userRouter");
-// app.use((req, res, next) => {
-//   // Check if the user is authenticated
-//   // You can implement your own authentication logic here
+const authController = require("./auth.controller");
 
-//   if (userIsAuthenticated) {
-//     // If the user is authenticated, proceed to the next middleware
-//     next();
-//   } else {
-//     // If the user is not authenticated, return an error response
-//     res.status(401).send('Unauthorized');
-//   }
-// });
+app.use(async (req, res, next) => {
+  const userIsAuthenticated = await authController.validateToken(
+    req,
+    res,
+    next
+  );
+
+  if (!res.body == "valid") {
+    res.status(401).send("Unauthorized");
+  }
+});
 app.use("/user", userRotes);
 app.use("/todo", todoRoutes);
 
