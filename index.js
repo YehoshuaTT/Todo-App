@@ -19,7 +19,20 @@ const app = express();
 app.use(express.json());
 
 const todoRoutes = require("./todoRouter");
+const userRotes = require("./userRouter");
+// app.use((req, res, next) => {
+//   // Check if the user is authenticated
+//   // You can implement your own authentication logic here
 
+//   if (userIsAuthenticated) {
+//     // If the user is authenticated, proceed to the next middleware
+//     next();
+//   } else {
+//     // If the user is not authenticated, return an error response
+//     res.status(401).send('Unauthorized');
+//   }
+// });
+app.use("/user", userRotes);
 app.use("/todo", todoRoutes);
 
 const port = 3000;

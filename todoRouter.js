@@ -1,6 +1,6 @@
 const express = require("express");
 
-const TodoController = require("./controller");
+const TodoController = require("./todo.controller");
 
 const todoRoutes = express.Router();
 todoRoutes.get("/", TodoController.index);
