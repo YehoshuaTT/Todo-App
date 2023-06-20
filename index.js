@@ -1,13 +1,26 @@
+require("dotenv").config();
+const { mongoose } = require("mongoose");
+
+const url = process.env.MONGO_URL;
+
+// Connect to MongoDB
+mongoose
+  .connect(url)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    // Proceed with your database operations
+  })
+  .catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
+  });
+
 const express = require("express");
-const TodoController = require("./controller");
 const app = express();
 app.use(express.json());
 
-app.get("/", TodoController.index);
-app.get("/:id", TodoController.show);
-app.post("/", TodoController.create);
-app.put("/:id", TodoController.update);
-app.delete("/:id", TodoController.delete);
+const todoRoutes = require("./todoRouter");
+
+app.use("/todo", todoRoutes);
 
 const port = 3000;
 

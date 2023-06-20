@@ -1,34 +1,34 @@
-const todos = [
-  {
-    id: 1,
-    title: "My Todo",
-    description: "This is description;",
-  },
-  {
-    id: 2,
-    title: "My Todo 2",
-    description: "This is description;",
-  },
-  {
-    id: 31,
-    title: "My Todo 3",
-    description: "This is description;",
-  },
-];
+const Todo = require("./todo.model.js");
 
 class TodoController {
   static async index(req, res) {
     try {
-      res.send(todos);
+      let result = await Todo.find({});
+      res.send(result);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
     }
   }
+  static async create(req, res) {
+    try {
+      let todo = await Todo.create({
+        title: req.body.title,
+        description: req.body.description,
+      });
+
+      res.send(todo);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
+
   static async show(req, res) {
     try {
-      let result = todos.find((todo) => todo.id == req.params.id);
-      res.send(result);
+      const result = await Todo.findById(req.params.id);
+      if (result) res.send(result);
+      else res.send("No result");
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -37,37 +37,18 @@ class TodoController {
 
   static async update(req, res) {
     try {
-      let test = todos.find((todo) => todo.id == req.params.id);
+      const updating = await Todo.findByIdAndUpdate(req.params.id, req.body);
+      res.send(await Todo.findById(req.params.id));
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
 
-      if (test) {
-        test.title = req.body.title;
-        test.description = req.body.description;
-      }
-      res.send(test);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
-    }
-  }
-  static async create(req, res) {
-    try {
-      let todo = {
-        id: new Date(),
-        title: req.body.title,
-        description: req.body.description,
-      };
-      todos.push(todo);
-      res.send(todo);
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
-    }
-  }
   static async delete(req, res) {
     try {
-      let index = todos.findIndex((todo) => todo.id == req.params.id);
-      if (index != -1) todos.splice(index, 1);
-      res.send(todos);
+      let doc = await Todo.findByIdAndDelete(req.params.id);
+      res.send(doc);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
