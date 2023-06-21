@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 const authService = require("../middleware/auth");
-const userSchema = require("../models/user.model");
+const User = require("../models/user.model");
 
 class UserClass {
   static async register(req, res) {
     try {
-      const exist = await userSchema.findOne(
+      const exist = await User.findOne(
         { email: req.body.email },
         { email: 1, _id: 0 }
       );
@@ -13,7 +13,7 @@ class UserClass {
       if (exist) {
         return res.status(400).send("email already exists in the system");
       }
-      await userSchema.create({
+      await User.create({
         ...req.body,
         password: bcrypt.hashSync(req.body.password, 10),
       });
@@ -25,7 +25,7 @@ class UserClass {
 
   static async login(req, res) {
     try {
-      const user = await userSchema.findOne({ email: req.body.email });
+      const user = await User.findOne({ email: req.body.email });
       if (!user) {
         return res.status(401).send("Unauthorized");
       }
