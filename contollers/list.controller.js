@@ -1,10 +1,9 @@
-const Todo = require("../models/todo.model");
+const List = require("../models/list.model");
 
-class TodoController {
+class ListController {
   static async index(req, res) {
     try {
-      let result = await Todo.find({});
-      res.send(result);
+      res.send(await List.find({}));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -13,13 +12,13 @@ class TodoController {
 
   static async create(req, res) {
     try {
-      let todo = await Todo.create({
+      let list = await List.create({
         title: req.body.title,
         description: req.body.description,
         userId: req.user.id,
       });
 
-      res.send(todo);
+      res.send(list);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -28,7 +27,7 @@ class TodoController {
 
   static async show(req, res) {
     try {
-      const result = await Todo.findById(req.params.id);
+      const result = await List.findById(req.params.id);
       if (result) res.send(result);
       else res.send("No result");
     } catch (err) {
@@ -39,8 +38,8 @@ class TodoController {
 
   static async update(req, res) {
     try {
-      await Todo.findByIdAndUpdate(req.params.id, req.body);
-      res.send(await Todo.findById(req.params.id));
+      await List.findByIdAndUpdate(req.params.id, req.body);
+      res.send(await List.findById(req.params.id));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -49,7 +48,7 @@ class TodoController {
 
   static async delete(req, res) {
     try {
-      res.send(await Todo.findByIdAndDelete(req.params.id));
+      res.send(await List.findByIdAndDelete(req.params.id));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -57,4 +56,4 @@ class TodoController {
   }
 }
 
-module.exports = TodoController;
+module.exports = ListController;
