@@ -11,7 +11,12 @@ const validateToken = async (req, res, next) => {
   try {
     const cookie = req.cookies.userId;
     if (!cookie) return res.sendStatus(401);
-    req.user = await findUserByToken(cookie);
+
+    const user = await findUserByToken(cookie);
+    if (!user) return res.sendStatus(401);
+
+    req.user = user;
+
     next();
   } catch (err) {
     console.log(err);

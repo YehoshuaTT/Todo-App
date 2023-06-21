@@ -27,12 +27,10 @@ class UserClass {
     try {
       const user = await userSchema.findOne({ email: req.body.email });
       if (!user) {
-        res.status(401).send("Unauthorized");
-        return;
+        return res.status(401).send("Unauthorized");
       }
 
-      const validation = await bcrypt.compare(req.body.password, user.password);
-      if (validation) {
+      if (await bcrypt.compare(req.body.password, user.password)) {
         res.cookie("userId", await authService.createToken(user.id));
         res.send({ user: user.toObject() });
       } else res.status(401).send("Unauthorized");
