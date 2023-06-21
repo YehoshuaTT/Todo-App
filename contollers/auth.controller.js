@@ -13,9 +13,10 @@ class UserClass {
       if (exist) {
         return res.status(400).send("email already exists in the system");
       }
-
-      req.body.password = bcrypt.hashSync(req.body.password, 10);
-      await userSchema.create({ ...req.body });
+      await userSchema.create({
+        ...req.body,
+        password: bcrypt.hashSync(req.body.password, 10),
+      });
       res.sendStatus(200);
     } catch (error) {
       res.sendStatus(500);

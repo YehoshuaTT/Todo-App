@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const secret = process.env.SECRET;
 
-const createToken = async (data) => {
-  return jwt.sign({ id: data }, secret, { expiresIn: "10h" });
+const createToken = async (userId) => {
+  return jwt.sign({ id: userId }, secret, { expiresIn: "10h" });
 };
 
 const validateToken = async (req, res, next) => {
