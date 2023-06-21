@@ -1,41 +1,26 @@
 require("dotenv").config();
 const { mongoose } = require("mongoose");
-
-const url = process.env.MONGO_URL;
-
-// Connect to MongoDB
-mongoose
-  .connect(url)
-  .then(() => {
-    console.log("Connected to MongoDB");
-    // Proceed with your database operations
-  })
-  .catch((error) => {
-    console.error("Failed to connect to MongoDB:", error);
-  });
+const todoRoutes = require("./routes/todoRouter");
+const authRouts = require("./routes/authRouter");
 
 const express = require("express");
 const app = express();
 app.use(express.json());
 
-const todoRoutes = require("./todoRouter");
-const userRotes = require("./userRouter");
-const authController = require("./auth.controller");
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
+  });
 
-app.use(async (req, res, next) => {
-  const userIsAuthenticated = await authController.validateToken(
-    req,
-    res,
-    next
-  );
-
-  if (!res.body == "valid") {
-    res.status(401).send("Unauthorized");
-  }
-});
-app.use("/user", userRotes);
 app.use("/todo", todoRoutes);
+app.use("/", authRouts);
 
+//TODO: move this port to env file
 const port = 3000;
 
 app.listen(port, () => {
