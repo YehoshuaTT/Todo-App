@@ -30,11 +30,12 @@ class UserClass {
       }
 
       const validation = await bcrypt.compare(req.body.password, user.password);
-      if (validation)
-        res.send({
+      if (validation) {
+        res.cookie("user", {
           token: await authService.createToken(req.body.email),
         });
-      else res.status(401).send("Unauthorized");
+        res.send("Logged in successfully!");
+      } else res.status(401).send("Unauthorized");
     } catch (err) {
       res.sendStatus(500);
     }

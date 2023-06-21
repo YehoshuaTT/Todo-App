@@ -2,9 +2,12 @@ require("dotenv").config();
 const { mongoose } = require("mongoose");
 const todoRoutes = require("./routes/todoRouter");
 const authRouts = require("./routes/authRouter");
-
 const express = require("express");
+const cookieParser = require("cookie-parser");
+
 const app = express();
+
+app.use(cookieParser());
 app.use(express.json());
 
 // Connect to MongoDB

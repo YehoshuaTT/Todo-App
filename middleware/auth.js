@@ -9,10 +9,8 @@ const createToken = async (data) => {
 
 const validateToken = async (req, res, next) => {
   try {
-    const token = jwt.verify(
-      req.headers.authorization.replace("Bearer ", ""),
-      secret
-    );
+    const cookie = req.cookies.user;
+    const token = jwt.verify(cookie.token, secret);
     // TODO: do something with token!
     // like finding the user by its id and saving the value into context i.e the request
     // req.user = user

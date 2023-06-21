@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 //TODO: add user id to the schema
 // search in the internet for the valid mongo Type for this id
 const TodoSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
