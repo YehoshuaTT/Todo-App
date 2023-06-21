@@ -1,4 +1,4 @@
-const Todo = require("./todo.model.js");
+const Todo = require("../models/todo.model");
 
 class TodoController {
   static async index(req, res) {
@@ -10,11 +10,13 @@ class TodoController {
       res.sendStatus(500);
     }
   }
+
   static async create(req, res) {
     try {
       let todo = await Todo.create({
         title: req.body.title,
         description: req.body.description,
+        userId: req.user.id,
       });
 
       res.send(todo);

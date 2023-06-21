@@ -1,42 +1,30 @@
 require("dotenv").config();
 const { mongoose } = require("mongoose");
+const todoRoutes = require("./routes/todoRouter");
+const authRouts = require("./routes/authRouter");
+const express = require("express");
+const cookieParser = require("cookie-parser");
 
-const url = process.env.MONGO_URL;
+const app = express();
 
-// Connect to MongoDB
+app.use(cookieParser());
+app.use(express.json());
+
 mongoose
-  .connect(url)
+  .connect(process.env.MONGO_URL, {
+    dbName: process.env.DB_NAME,
+  })
   .then(() => {
     console.log("Connected to MongoDB");
-    // Proceed with your database operations
   })
   .catch((error) => {
     console.error("Failed to connect to MongoDB:", error);
   });
 
-const express = require("express");
-const app = express();
-app.use(express.json());
-
-const todoRoutes = require("./todoRouter");
-const userRotes = require("./userRouter");
-const authController = require("./auth.controller");
-
-app.use(async (req, res, next) => {
-  const userIsAuthenticated = await authController.validateToken(
-    req,
-    res,
-    next
-  );
-
-  if (!res.body == "valid") {
-    res.status(401).send("Unauthorized");
-  }
-});
-app.use("/user", userRotes);
 app.use("/todo", todoRoutes);
+app.use("/auth", authRouts);
 
-const port = 3000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
