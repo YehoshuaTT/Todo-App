@@ -14,8 +14,9 @@ class UserClass {
         return res.status(400).send("email already exists in the system");
       }
 
-      const hash = bcrypt.hashSync(req.body.password, 10);
-      res.send(await userSchema.create({ ...req.body, password: hash }));
+      req.body.password = bcrypt.hashSync(req.body.password, 10);
+      await userSchema.create({ ...req.body });
+      res.sendStatus(200);
     } catch (error) {
       res.sendStatus(500);
     }
@@ -31,10 +32,8 @@ class UserClass {
 
       const validation = await bcrypt.compare(req.body.password, user.password);
       if (validation) {
-        res.cookie("user", {
-          token: await authService.createToken(req.body.email),
-        });
-        res.send("Logged in successfully!");
+        res.cookie("userId", await authService.createToken(user.id));
+        res.send({ user: user.toObject() });
       } else res.status(401).send("Unauthorized");
     } catch (err) {
       res.sendStatus(500);

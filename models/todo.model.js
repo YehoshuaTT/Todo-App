@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-//TODO: add user id to the schema
-// search in the internet for the valid mongo Type for this id
 const TodoSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
@@ -15,6 +13,10 @@ const TodoSchema = new Schema({
   description: {
     type: String,
     required: false,
+  },
+  completed: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -1,6 +1,5 @@
 const Todo = require("../models/todo.model");
 
-//TODO: if something is not found, dont send 200, search for better http code
 class TodoController {
   static async index(req, res) {
     try {
@@ -14,12 +13,10 @@ class TodoController {
 
   static async create(req, res) {
     try {
-      //TODO: insert the user id here
-      // const userId = req.user._id
       let todo = await Todo.create({
         title: req.body.title,
         description: req.body.description,
-        //userId
+        userId: req.user.id,
       });
 
       res.send(todo);

@@ -1,27 +1,27 @@
-const jwt = require("jsonwebtoken");
 require("dotenv");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 const secret = process.env.SECRET;
 
 const createToken = async (data) => {
-  //TODO: change email to user's id
-  return jwt.sign({ email: data }, secret, { expiresIn: "10h" });
+  return jwt.sign({ id: data }, secret, { expiresIn: "10h" });
 };
 
 const validateToken = async (req, res, next) => {
   try {
-    const cookie = req.cookies.user;
-    const token = jwt.verify(cookie.token, secret);
-    // TODO: do something with token!
-    // like finding the user by its id and saving the value into context i.e the request
-    // req.user = user
+    const cookie = req.cookies.userId;
+    if (!cookie) return res.sendStatus(401);
+    req.user = await findUserByToken(cookie);
     next();
   } catch (err) {
+    console.log(err);
     res.status(401).send("Unauthorized");
   }
 };
 
-const findByToken = async (token) => {
-  // TODO: find user from mongoose by its token i.e the user's id
+const findUserByToken = async (token) => {
+  const reveal = jwt.verify(token, secret);
+  return await User.findById(reveal.id);
 };
 
-module.exports = { createToken, validateToken, findByToken };
+module.exports = { createToken, validateToken, findUserByToken };

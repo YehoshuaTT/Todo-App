@@ -10,9 +10,10 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-// Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL, {
+    dbName: process.env.DB_NAME,
+  })
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -23,8 +24,7 @@ mongoose
 app.use("/todo", todoRoutes);
 app.use("/", authRouts);
 
-//TODO: move this port to env file
-const port = 3000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
