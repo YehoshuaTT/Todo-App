@@ -12,13 +12,13 @@ class ListController {
 
   static async create(req, res) {
     try {
-      let list = await List.create({
-        title: req.body.title,
-        description: req.body.description,
-        userId: req.user.id,
-      });
-
-      res.send(list);
+      res.send(
+        await List.create({
+          title: req.body.title,
+          description: req.body.description,
+          userId: req.user.id,
+        })
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -27,9 +27,7 @@ class ListController {
 
   static async show(req, res) {
     try {
-      const result = await List.findById(req.params.id);
-      if (result) res.send(result);
-      else res.send("No result");
+      res.send(await List.findById(req.params.id));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -38,12 +36,13 @@ class ListController {
 
   static async update(req, res) {
     try {
-      updetedValues = {
-        title: req.body.title,
-        discription: req.body.discription,
-      };
-      await List.findByIdAndUpdate(req.params.id, updetedValues);
-      res.send(await List.findById(req.params.id));
+      res.send(
+        await List.findByIdAndUpdate(
+          req.params.id,
+          { title: req.body.title, description: req.body.description },
+          { new: true }
+        )
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);

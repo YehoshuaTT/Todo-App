@@ -2,7 +2,7 @@ require("dotenv").config();
 const { mongoose } = require("mongoose");
 const todoRoutes = require("./routes/todoRouter");
 const authRouts = require("./routes/authRouter");
-const listRoutes = require("./routes/todoRouter");
+const listRoutes = require("./routes/listRouter");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 

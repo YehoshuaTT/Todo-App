@@ -1,6 +1,5 @@
 const List = require("../models/list.model");
 const Todo = require("../models/todo.model");
-const ListController = require("./list.controller");
 
 class TodoController {
   static async index(req, res) {
@@ -19,8 +18,7 @@ class TodoController {
         description: req.body.description,
         userId: req.user.id,
       });
-      console.log(todo.id);
-      if (todo.userId)
+      if (req.user.id)
         await List.findByIdAndUpdate(req.body.listId, {
           $push: { todos: todo.id },
         });
@@ -33,9 +31,7 @@ class TodoController {
 
   static async show(req, res) {
     try {
-      const result = await Todo.findById(req.params.id);
-      if (result) res.send(result);
-      else res.send("No result");
+      res.send(await Todo.findById(req.params.id));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -44,8 +40,9 @@ class TodoController {
 
   static async update(req, res) {
     try {
-      await Todo.findByIdAndUpdate(req.params.id, req.body);
-      res.send(await Todo.findById(req.params.id));
+      res.send(
+        await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);

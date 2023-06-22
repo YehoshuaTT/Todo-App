@@ -1,28 +1,27 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const TodoSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
+const TodoSchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: false,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
-  },
-  Created: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+  { timestamps: true }
+);
 
 const Todo = mongoose.model("Todo", TodoSchema);
 
