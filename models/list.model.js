@@ -15,12 +15,13 @@ const ListSchema = new Schema({
     required: false,
   },
   date: {
-    deafult: Date.now,
+    type: Date,
+    default: Date.now(),
   },
 
   todos: { type: [{ type: Schema.Types.ObjectId, ref: "Todo" }], default: [] },
 });
 
-const List = mongoose.model("Todo", ListSchema);
+const List = mongoose.model("List", ListSchema);
 
 module.exports = List;

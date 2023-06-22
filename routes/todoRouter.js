@@ -1,15 +1,15 @@
 const express = require("express");
 
-const ListController = require("../contollers/list.controller");
+const TodoController = require("../contollers/todo.controller");
 const { validateToken } = require("../middleware/auth");
 
-const listRoutes = express.Router();
-listRoutes.use(validateToken);
+const todoRoutes = express.Router();
+todoRoutes.use(validateToken);
 
-listRoutes.get("/", ListController.index);
-listRoutes.get("/:id", ListController.show);
-listRoutes.post("/", ListController.create);
-listRoutes.put("/:id", ListController.update);
-listRoutes.delete("/:id", ListController.delete);
+todoRoutes.get("/", TodoController.index);
+todoRoutes.get("/:id", TodoController.show);
+todoRoutes.post("/", TodoController.create);
+todoRoutes.put("/:id", TodoController.update);
+todoRoutes.delete("/:id", TodoController.delete);
 
-module.exports = listRoutes;
+module.exports = todoRoutes;

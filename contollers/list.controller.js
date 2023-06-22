@@ -38,7 +38,11 @@ class ListController {
 
   static async update(req, res) {
     try {
-      await List.findByIdAndUpdate(req.params.id, req.body);
+      updetedValues = {
+        title: req.body.title,
+        discription: req.body.discription,
+      };
+      await List.findByIdAndUpdate(req.params.id, updetedValues);
       res.send(await List.findById(req.params.id));
     } catch (err) {
       console.log(err);

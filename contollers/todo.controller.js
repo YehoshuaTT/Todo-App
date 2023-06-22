@@ -1,10 +1,11 @@
+const List = require("../models/list.model");
 const Todo = require("../models/todo.model");
+const ListController = require("./list.controller");
 
 class TodoController {
   static async index(req, res) {
     try {
-      let result = await Todo.find({});
-      res.send(result);
+      res.send(await Todo.find({}));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -18,7 +19,11 @@ class TodoController {
         description: req.body.description,
         userId: req.user.id,
       });
-
+      console.log(todo.id);
+      if (todo.userId)
+        await List.findByIdAndUpdate(req.body.listId, {
+          $push: { todos: todo.id },
+        });
       res.send(todo);
     } catch (err) {
       console.log(err);
