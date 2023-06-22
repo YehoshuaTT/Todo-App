@@ -2,6 +2,7 @@ require("dotenv").config();
 const { mongoose } = require("mongoose");
 const todoRoutes = require("./routes/todoRouter");
 const authRouts = require("./routes/authRouter");
+const listRoutes = require("./routes/todoRouter");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
@@ -21,8 +22,9 @@ mongoose
     console.error("Failed to connect to MongoDB:", error);
   });
 
-app.use("/todo", todoRoutes);
 app.use("/auth", authRouts);
+app.use("/todo", todoRoutes);
+app.use("/list", listRoutes);
 
 const port = process.env.PORT;
 

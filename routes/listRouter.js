@@ -1,6 +1,6 @@
 const express = require("express");
 
-const ListController = require("../contollers/list.controller");
+const ListController = require("../contollers/todo.controller");
 const { validateToken } = require("../middleware/auth");
 
 const listRoutes = express.Router();
