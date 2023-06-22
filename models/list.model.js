@@ -14,6 +14,9 @@ const ListSchema = new Schema({
     type: String,
     required: false,
   },
+  date: {
+    deafult: Date.now,
+  },
 
   todos: { type: [{ type: Schema.Types.ObjectId, ref: "Todo" }], default: [] },
 });

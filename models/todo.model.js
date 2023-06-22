@@ -18,6 +18,13 @@ const TodoSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  list: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  date: {
+    deafult: Date.now,
+  },
 });
 
 const Todo = mongoose.model("Todo", TodoSchema);
