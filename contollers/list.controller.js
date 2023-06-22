@@ -3,7 +3,7 @@ const List = require("../models/list.model");
 class ListController {
   static async index(req, res) {
     try {
-      res.send(await List.find({}));
+      res.send(await List.find({ userId: req.user }));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -27,7 +27,7 @@ class ListController {
 
   static async show(req, res) {
     try {
-      res.send(await List.findById(req.params.id));
+      res.send(await List.findOne({ _id: req.params.id, userId: req.user.id }));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -37,8 +37,8 @@ class ListController {
   static async update(req, res) {
     try {
       res.send(
-        await List.findByIdAndUpdate(
-          req.params.id,
+        await List.findOneAndUpdate(
+          { _id: req.params.id, userId: req.user.id },
           { title: req.body.title, description: req.body.description },
           { new: true }
         )
@@ -51,7 +51,9 @@ class ListController {
 
   static async delete(req, res) {
     try {
-      res.send(await List.findByIdAndDelete(req.params.id));
+      res.send(
+        await List.findOneAndDelete({ _id: req.params.id, userId: req.user.id })
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);

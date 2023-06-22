@@ -4,7 +4,7 @@ const Todo = require("../models/todo.model");
 class TodoController {
   static async index(req, res) {
     try {
-      res.send(await Todo.find({}));
+      res.send(await Todo.find({ userId: req.user }));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -31,7 +31,7 @@ class TodoController {
 
   static async show(req, res) {
     try {
-      res.send(await Todo.findById(req.params.id));
+      res.send(await Todo.findOne({ _id: req.params.id, userId: req.user.id }));
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
@@ -41,7 +41,11 @@ class TodoController {
   static async update(req, res) {
     try {
       res.send(
-        await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        await Todo.findOneAndUpdate(
+          { _id: req.params.id, userId: req.user.id },
+          { title: req.body.title, description: req.body.description },
+          { new: true }
+        )
       );
     } catch (err) {
       console.log(err);
@@ -51,7 +55,9 @@ class TodoController {
 
   static async delete(req, res) {
     try {
-      res.send(await Todo.findByIdAndDelete(req.params.id));
+      res.send(
+        await Todo.findOneAndDelete({ _id: req.params.id, userId: req.user.id })
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
