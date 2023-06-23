@@ -13,16 +13,13 @@ class TodoController {
 
   static async create(req, res) {
     try {
-      let todo = await Todo.create({
-        title: req.body.title,
-        description: req.body.description,
-        userId: req.user.id,
-      });
-      if (req.user.id)
-        await List.findByIdAndUpdate(req.body.listId, {
-          $push: { todos: todo.id },
-        });
-      res.send(todo);
+      res.send(
+        await Todo.create({
+          title: req.body.title,
+          description: req.body.description,
+          userId: req.user.id,
+        })
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);

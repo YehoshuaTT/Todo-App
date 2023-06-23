@@ -1,4 +1,5 @@
 const List = require("../models/list.model");
+const Todo = require("../models/todo.model");
 
 class ListController {
   static async index(req, res) {
@@ -36,10 +37,24 @@ class ListController {
 
   static async update(req, res) {
     try {
+      let todo = req.body.todo;
+
+      if (todo) {
+        todo = await Todo.create({
+          title: todo.title,
+          description: todo.description,
+          userId: req.user.id,
+        });
+      }
+
       res.send(
         await List.findOneAndUpdate(
           { _id: req.params.id, userId: req.user.id },
-          { title: req.body.title, description: req.body.description },
+          {
+            title: req.body.title,
+            description: req.body.description,
+            $push: { todos: todo },
+          },
           { new: true }
         )
       );

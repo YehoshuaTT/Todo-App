@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Todo = require("./todo.model");
 const { Schema } = mongoose;
 
 const ListSchema = new Schema(
@@ -17,8 +18,7 @@ const ListSchema = new Schema(
     },
 
     todos: {
-      type: [{ type: Schema.Types.ObjectId, ref: "Todo" }],
-      default: [],
+      type: [Todo.schema],
     },
   },
   { timestamps: true }
