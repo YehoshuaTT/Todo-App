@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const Todo = require("./todo.model");
 const { Schema } = mongoose;
 
-const TodoSchema = new Schema(
+const ListSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -9,20 +10,19 @@ const TodoSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
     },
     description: {
       type: String,
       required: false,
     },
-    completed: {
-      type: Boolean,
-      default: false,
+
+    todos: {
+      type: [Todo.schema],
     },
   },
   { timestamps: true }
 );
 
-const Todo = mongoose.model("Todo", TodoSchema);
+const List = mongoose.model("List", ListSchema);
 
-module.exports = Todo;
+module.exports = List;
