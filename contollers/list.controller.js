@@ -37,23 +37,13 @@ class ListController {
 
   static async update(req, res) {
     try {
-      let todo = req.body.todo;
-
-      if (todo) {
-        todo = await Todo.create({
-          title: todo.title,
-          description: todo.description,
-          userId: req.user.id,
-        });
-      }
-
       res.send(
         await List.findOneAndUpdate(
           { _id: req.params.id, userId: req.user.id },
           {
             title: req.body.title,
             description: req.body.description,
-            $push: { todos: todo },
+            todos: req.body.todos,
           },
           { new: true }
         )
@@ -66,9 +56,8 @@ class ListController {
 
   static async delete(req, res) {
     try {
-      res.send(
-        await List.findOneAndDelete({ _id: req.params.id, userId: req.user.id })
-      );
+      await List.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+      res.sendStatus(200);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
