@@ -10,6 +10,7 @@ todoRoutes.get("/", TodoController.index);
 todoRoutes.get("/:id", TodoController.show);
 todoRoutes.post("/", TodoController.create);
 todoRoutes.put("/:id", TodoController.update);
+todoRoutes.put("/:id/toggle", TodoController.toggle);
 todoRoutes.delete("/:id", TodoController.delete);
 
 module.exports = todoRoutes;
