@@ -63,6 +63,43 @@ class ListController {
       res.sendStatus(500);
     }
   }
+
+  static async storeTodo(req, res) {
+    try {
+      const todo = new Todo(req.body);
+      const list = await List.findOne({
+        _id: req.params.id,
+        userId: req.user.id,
+      });
+      list?.todos?.push(todo);
+      await list?.save();
+      res.send(todo);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
+
+  static async toggle(req, res) {
+    try {
+      let list = await List.findOne({
+        _id: req.params.id,
+        userId: req.user.id,
+      });
+
+      let todo = list.todos.find((todo) => todo._id.equals(req.params.todoId));
+
+      if (todo) {
+        todo.completed = !todo?.completed;
+        await list.save();
+      }
+
+      res.sendStatus(200);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
 }
 
 module.exports = ListController;

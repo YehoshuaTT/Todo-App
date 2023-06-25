@@ -23,8 +23,8 @@ mongoose
   });
 
 app.use("/auth", authRouts);
-app.use("/todo", todoRoutes);
-app.use("/list", listRoutes);
+app.use("/todos", todoRoutes);
+app.use("/lists", listRoutes);
 
 const port = process.env.PORT;
 

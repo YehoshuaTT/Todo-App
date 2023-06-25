@@ -60,6 +60,20 @@ class TodoController {
       res.sendStatus(500);
     }
   }
+  static async toggle(req, res) {
+    try {
+      let todo = await Todo.findOne({
+        _id: req.params.id,
+        userId: req.user.id,
+      });
+      todo.completed = !todo.completed;
+      await todo.save();
+      res.sendStatus(200);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
 }
 
 module.exports = TodoController;
