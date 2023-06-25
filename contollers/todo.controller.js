@@ -67,7 +67,7 @@ class TodoController {
         userId: req.user.id,
       });
       todo.completed = !todo.completed;
-      todo.save();
+      await todo.save();
       res.sendStatus(200);
     } catch (err) {
       console.log(err);
