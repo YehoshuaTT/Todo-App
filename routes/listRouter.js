@@ -9,6 +9,7 @@ listRoutes.use(validateToken);
 listRoutes.get("/", ListController.index);
 listRoutes.get("/:id", ListController.show);
 listRoutes.post("/", ListController.create);
+listRoutes.put("/:id/todo/:todoId", ListController.toggle);
 listRoutes.put("/:id", ListController.update);
 listRoutes.delete("/:id", ListController.delete);
 
