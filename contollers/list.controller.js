@@ -37,9 +37,6 @@ class ListController {
 
   static async update(req, res) {
     try {
-      req.body.todos.forEach((todo) => {
-        todo.userId = req.user.id;
-      });
       res.send(
         await List.findOneAndUpdate(
           { _id: req.params.id, userId: req.user.id },
@@ -67,7 +64,21 @@ class ListController {
     }
   }
 
-  //TODO: create a new endpoint here that will toggle one todo inside the list
+  static async storeTodo(req, res) {
+    try {
+      const todo = new Todo(req.body);
+      const list = await List.findOne({
+        _id: req.params.id,
+        userId: req.user.id,
+      });
+      list?.todos?.push(todo);
+      await list?.save();
+      res.send(todo);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
 
   static async toggle(req, res) {
     try {
@@ -76,11 +87,13 @@ class ListController {
         userId: req.user.id,
       });
 
-      let theTodo = list.todos.find((todo) =>
-        todo._id.equals(req.params.todoId)
-      );
-      theTodo.completed = !theTodo.completed;
-      await list.save();
+      let todo = list.todos.find((todo) => todo._id.equals(req.params.todoId));
+
+      if (todo) {
+        todo.completed = !todo?.completed;
+        await list.save();
+      }
+
       res.sendStatus(200);
     } catch (err) {
       console.log(err);
