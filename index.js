@@ -25,7 +25,7 @@ mongoose
 app.use("/auth", authRouts);
 app.use("/todo", todoRoutes);
 app.use("/list", listRoutes);
-
+app.use("/categories", categoriesRoutes);
 const port = process.env.PORT;
 
 app.listen(port, () => {
