@@ -5,12 +5,12 @@ class CategoryService {
     return Category.find({ userId });
   }
 
-  static async show(categoryId, userId) {
-    return Category.findOne({ _id: categoryId, userId });
-  }
-
   static async create(name, userId) {
     return Category.create({ name, userId });
+  }
+
+  static async show(categoryId, userId) {
+    return Category.findOne({ _id: categoryId, userId });
   }
 
   static async update(categoryId, userId, name) {
