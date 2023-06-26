@@ -15,10 +15,10 @@ class CategoryService {
     return await Category.findOne({ _id: categoryId, userId });
   }
 
-  static async update(categoryId, userId, title) {
+  static async update(categoryId, userId, toBeUpdated) {
     return Category.findOneAndUpdate(
       { _id: categoryId, userId },
-      { title },
+      { ...toBeUpdated },
       { new: true }
     );
   }
