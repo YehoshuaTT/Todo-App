@@ -12,9 +12,13 @@ class CategoryController {
 
   static async create(req, res) {
     try {
-      res.send(await CategoryService.create(req.body, req.user.id));
+      if (await CategoryService.create(req.body.title, req.user.id))
+        res.sendStatus(200);
+      else res.sendStatus(400);
     } catch (err) {
-      console.log(err);
+      if (err.message === "duplication error") {
+        res.status(400).send("duplicated title");
+      }
       res.sendStatus(500);
     }
   }
@@ -31,7 +35,7 @@ class CategoryController {
   static async update(req, res) {
     try {
       res.send(
-        await CategoryService.update(req.params.id, req.user.id, req.body)
+        await CategoryService.update(req.params.id, req.user.id, req.body.title)
       );
     } catch (err) {
       console.log(err);

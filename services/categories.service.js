@@ -5,18 +5,20 @@ class CategoryService {
     return Category.find({ userId });
   }
 
-  static async create(name, userId) {
-    return Category.create({ name, userId });
+  static async create(title, userId) {
+    if (await Category.findOne({ title, userId }))
+      throw new Error("duplication error");
+    return await Category.create({ title, userId });
   }
 
   static async show(categoryId, userId) {
-    return Category.findOne({ _id: categoryId, userId });
+    return await Category.findOne({ _id: categoryId, userId });
   }
 
-  static async update(categoryId, userId, name) {
+  static async update(categoryId, userId, title) {
     return Category.findOneAndUpdate(
       { _id: categoryId, userId },
-      { name },
+      { title },
       { new: true }
     );
   }
