@@ -3,6 +3,7 @@ const { mongoose } = require("mongoose");
 const todoRoutes = require("./routes/todoRouter");
 const authRouts = require("./routes/authRouter");
 const listRoutes = require("./routes/listRouter");
+const categoriesRoutes = require("./routes/categoriesRouter.js");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
