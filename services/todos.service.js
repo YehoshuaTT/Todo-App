@@ -20,9 +20,11 @@ class TodosService {
       { new: true }
     );
   }
+
   static async delete(todoId, userId) {
     return Todo.findOneAndDelete({ _id: todoId, userId });
   }
+
   static async toggle(todoId, userId) {
     let todo = await Todo.findOne({ _id: todoId, userId });
     todo.completed = !todo.completed;
