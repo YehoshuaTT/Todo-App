@@ -19,6 +19,11 @@ const ListSchema = new Schema(
     todos: {
       type: [Todo.schema],
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
+      sparse: true,
+    },
   },
   { timestamps: true }
 );
