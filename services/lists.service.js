@@ -3,7 +3,7 @@ const Todo = require("../models/todo.model");
 
 class ListService {
   static async index(userId) {
-    return await List.find({ userId: userId });
+    return await List.find({ userId });
   }
 
   static async create(list, userId) {

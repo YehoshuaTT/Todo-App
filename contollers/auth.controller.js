@@ -1,40 +1,26 @@
-const bcrypt = require("bcrypt");
-const authService = require("../middleware/auth");
-const User = require("../models/user.model");
+const UserService = require("../services/user.service");
 
 class UserClass {
   static async register(req, res) {
     try {
-      const exist = await User.findOne(
-        { email: req.body.email },
-        { email: 1, _id: 0 }
-      );
-
-      if (exist) {
-        return res.status(400).send("email already exists in the system");
-      }
-      await User.create({
-        ...req.body,
-        password: bcrypt.hashSync(req.body.password, 10),
-      });
+      await UserService.register(req.body);
       res.sendStatus(200);
-    } catch (error) {
+    } catch (err) {
+      console.log(err);
+      if (err.message === "duplication error")
+        res.status(400).send("email already exists in the system");
       res.sendStatus(500);
     }
   }
 
   static async login(req, res) {
     try {
-      const user = await User.findOne({ email: req.body.email });
-      if (!user) {
-        return res.status(401).send("Unauthorized");
-      }
-
-      if (await bcrypt.compare(req.body.password, user.password)) {
-        res.cookie("userId", await authService.createToken(user.id));
-        res.send({ user: user.toObject() });
-      } else res.status(401).send("Unauthorized");
+      const logged = await UserService.login(req.body);
+      res.cookie("userId", logged.token);
+      res.send({ user: logged.user.toObject() });
     } catch (err) {
+      if (err.message === "Not excist error")
+        res.status(401).send("Unauthorized");
       res.sendStatus(500);
     }
   }
