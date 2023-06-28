@@ -69,6 +69,20 @@ class ListController {
       res.sendStatus(500);
     }
   }
+  static async updateCategory(req, res) {
+    try {
+      res.send(
+        await ListService.update(
+          req.params.id,
+          req.user.id,
+          req.params.category
+        )
+      );
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
 }
 
 module.exports = ListController;

@@ -14,10 +14,10 @@ class ListService {
     return await List.findOne({ _id: listId, userId: userId });
   }
 
-  static async update(listId, userId, listBody) {
+  static async update(listId, userId, category) {
     return await List.findOneAndUpdate(
       { _id: listId, userId: userId },
-      { ...listBody },
+      { category },
       { new: true }
     );
   }
@@ -43,6 +43,13 @@ class ListService {
       todo.completed = !todo?.completed;
       await list.save();
     }
+  }
+  static async updateCategory(listId, userId, category) {
+    return await List.findOneAndUpdate(
+      { _id: listId, userId: userId },
+      { category },
+      { new: true }
+    );
   }
 }
 

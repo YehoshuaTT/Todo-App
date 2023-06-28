@@ -15,14 +15,13 @@ const ListSchema = new Schema(
       type: String,
       required: false,
     },
-
-    todos: {
-      type: [Todo.schema],
-    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "category",
-      sparse: true,
+      required: false,
+    },
+    todos: {
+      type: [Todo.schema],
     },
   },
   { timestamps: true }
