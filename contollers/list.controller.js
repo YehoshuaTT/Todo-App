@@ -1,5 +1,3 @@
-const List = require("../models/list.model");
-const Todo = require("../models/todo.model");
 const ListService = require("../services/lists.service");
 
 class ListController {
