@@ -8,10 +8,10 @@ const CategorySchema = new Schema({
   },
   title: {
     type: String,
-     required: true,
+    required: true,
   },
 });
 
-const Category = mongoose.model("Category", CategorySchema);
+const Category = mongoose.model("category", CategorySchema);
 
 module.exports = Category;
