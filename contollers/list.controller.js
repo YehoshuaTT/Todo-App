@@ -1,5 +1,3 @@
-const List = require("../models/list.model");
-const Todo = require("../models/todo.model");
 const ListService = require("../services/lists.service");
 
 class ListController {
@@ -64,6 +62,20 @@ class ListController {
     try {
       await ListService.toggle(req.params.id, req.user.id, req.params.todoId);
       res.sendStatus(200);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  }
+  static async updateCategory(req, res) {
+    try {
+      res.send(
+        await ListService.update(
+          req.params.id,
+          req.user.id,
+          req.params.category
+        )
+      );
     } catch (err) {
       console.log(err);
       res.sendStatus(500);

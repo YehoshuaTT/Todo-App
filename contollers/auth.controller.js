@@ -6,7 +6,6 @@ class UserClass {
       await UserService.register(req.body);
       res.sendStatus(200);
     } catch (err) {
-      console.log(err);
       if (err.message === "duplication error")
         res.status(400).send("email already exists in the system");
       res.sendStatus(500);

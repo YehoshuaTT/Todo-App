@@ -3,7 +3,7 @@ const Todo = require("../models/todo.model");
 
 class ListService {
   static async index(userId) {
-    return await List.find({ userId });
+    return await List.find({ userId }).populate("category", "title");
   }
 
   static async create(list, userId) {
@@ -11,13 +11,16 @@ class ListService {
   }
 
   static async show(listId, userId) {
-    return await List.findOne({ _id: listId, userId: userId });
+    return await List.findOne({ _id: listId, userId: userId }).populate(
+      "category",
+      "title"
+    );
   }
 
-  static async update(listId, userId, listBody) {
+  static async update(listId, userId, category) {
     return await List.findOneAndUpdate(
       { _id: listId, userId: userId },
-      { ...listBody },
+      { category },
       { new: true }
     );
   }
@@ -43,6 +46,13 @@ class ListService {
       todo.completed = !todo?.completed;
       await list.save();
     }
+  }
+  static async updateCategory(listId, userId, category) {
+    return await List.findOneAndUpdate(
+      { _id: listId, userId: userId },
+      { category },
+      { new: true }
+    );
   }
 }
 

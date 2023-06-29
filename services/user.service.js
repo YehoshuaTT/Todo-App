@@ -13,6 +13,7 @@ class UserService {
       password: bcrypt.hashSync(userInfo.password, 10),
     });
   }
+
   static async login(userInfo) {
     const user = await User.findOne({ email: userInfo.email });
     if (!user) throw new Error("Not excist error");
