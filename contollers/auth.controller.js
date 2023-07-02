@@ -1,3 +1,4 @@
+const { findUserByToken } = require("../middleware/auth");
 const UserService = require("../services/user.service");
 
 class UserClass {
@@ -15,12 +16,31 @@ class UserClass {
   static async login(req, res) {
     try {
       const logged = await UserService.login(req.body);
-      res.cookie("userId", logged.token);
+      res.cookie("userId", logged.token, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        domain: "localhost",
+      });
       res.send({ user: logged.user.toObject() });
     } catch (err) {
       if (err.message === "Not excist error")
         res.status(401).send("Unauthorized");
       res.sendStatus(500);
+    }
+  }
+  static async loggedCheck(req, res) {
+    try {
+      const cookie = req.params.cookie;
+      if (!cookie) return res.sendStatus(401);
+
+      const user = await findUserByToken(cookie);
+      if (!user) return res.sendStatus(401);
+
+      res.send(user);
+    } catch (err) {
+      console.log(err);
+      res.status(401).send("Unauthorized");
     }
   }
 }
