@@ -9,7 +9,7 @@ class UserClass {
     } catch (err) {
       if (err.message === "duplication error")
         res.status(400).send("email already exists in the system");
-      res.sendStatus(500);
+      else res.sendStatus(500);
     }
   }
 
@@ -26,18 +26,12 @@ class UserClass {
     } catch (err) {
       if (err.message === "Not excist error")
         res.status(401).send("Unauthorized");
-      res.sendStatus(500);
+      else res.sendStatus(500);
     }
   }
-  static async loggedCheck(req, res) {
+  static async checkLogin(req, res) {
     try {
-      const cookie = req.params.cookie;
-      if (!cookie) return res.sendStatus(401);
-
-      const user = await findUserByToken(cookie);
-      if (!user) return res.sendStatus(401);
-
-      res.send(user);
+      res.send(req.user);
     } catch (err) {
       console.log(err);
       res.status(401).send("Unauthorized");
