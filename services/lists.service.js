@@ -45,7 +45,8 @@ class ListService {
     if (todo) {
       todo.completed = !todo?.completed;
       await list.save();
-    }
+      return true;
+    } else throw new Error();
   }
   static async updateCategory(listId, userId, category) {
     return await List.findOneAndUpdate(

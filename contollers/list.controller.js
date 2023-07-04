@@ -60,11 +60,13 @@ class ListController {
 
   static async toggle(req, res) {
     try {
-      await ListService.toggle(req.params.id, req.user.id, req.params.todoId);
-      res.sendStatus(200);
+      if (
+        await ListService.toggle(req.params.id, req.user.id, req.params.todoId)
+      )
+        res.sendStatus(200);
     } catch (err) {
       console.log(err);
-      res.sendStatus(500);
+      res.sendStatus(400);
     }
   }
   static async updateCategory(req, res) {
