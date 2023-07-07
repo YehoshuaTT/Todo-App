@@ -17,10 +17,10 @@ class ListService {
     );
   }
 
-  static async update(listId, userId, category) {
+  static async update(listId, userId, body) {
     return await List.findOneAndUpdate(
       { _id: listId, userId: userId },
-      { category },
+      { title: body.title, description: body.description },
       { new: true }
     );
   }
