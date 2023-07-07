@@ -21,7 +21,7 @@ const ListSchema = new Schema(
       required: false,
     },
     todos: {
-      type: [Todo.schema],
+      type: [mongoose.Schema.Types.ObjectId],
     },
   },
   { timestamps: true }

@@ -1,9 +1,11 @@
 const List = require("../models/list.model");
-const Todo = require("../models/todo.model");
+const TodosService = require("./todos.service");
 
 class ListService {
   static async index(userId) {
-    return await List.find({ userId }).populate("category", "title");
+    return await List.find({ userId })
+      .populate("category", "title")
+      .populate({ path: "todos", model: "Todo" });
   }
 
   static async create(list, userId) {
@@ -30,9 +32,9 @@ class ListService {
   }
 
   static async storeTodo(listId, userId, todoParams) {
-    const todo = new Todo(todoParams);
+    const todo = await TodosService.create(todoParams, userId);
     const list = await List.findOne({ _id: listId, userId: userId });
-    list?.todos?.push(todo);
+    list?.todos?.push(todo._id);
     const result = await list?.save();
     if (result) return todo;
   }
