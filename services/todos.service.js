@@ -1,3 +1,4 @@
+const List = require("../models/list.model");
 const Todo = require("../models/todo.model");
 
 class TodosService {
@@ -22,13 +23,23 @@ class TodosService {
   }
 
   static async delete(todoId, userId) {
-    return Todo.findOneAndDelete({ _id: todoId, userId });
-  }
+    const todo = await Todo.findOne({ _id: todoId, userId }).lean();
 
+    if (!todo) return;
+
+    await Todo.deleteOne({ _id: todoId, userId });
+
+    // Update associated List documents to remove the reference to the deleted Todo
+    await List.updateMany({ todos: todoId }, { $pull: { todos: todoId } });
+
+    return todo;
+  }
   static async toggle(todoId, userId) {
-    let todo = await Todo.findOne({ _id: todoId, userId });
-    todo.completed = !todo.completed;
-    await todo.save();
+    const toggling = await Todo.findOne({ _id: todoId, userId });
+    if (toggling) {
+      toggling.completed = !toggling.completed;
+      toggling.save();
+    } else throw new Error();
   }
 }
 

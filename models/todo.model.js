@@ -23,6 +23,17 @@ const TodoSchema = new Schema(
   { timestamps: true }
 );
 
+TodoSchema.pre("remove", async function (next) {
+  try {
+    // Access the associated List model and remove the reference to this Todo
+    const List = mongoose.model("List");
+    await List.updateMany({ todos: this._id }, { $pull: { todos: this._id } });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 const Todo = mongoose.model("Todo", TodoSchema);
 
 module.exports = Todo;

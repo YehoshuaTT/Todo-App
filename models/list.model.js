@@ -20,9 +20,12 @@ const ListSchema = new Schema(
       ref: "category",
       required: false,
     },
-    todos: {
-      type: [mongoose.Schema.Types.ObjectId],
-    },
+    todos: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Todo",
+      },
+    ],
   },
   { timestamps: true }
 );

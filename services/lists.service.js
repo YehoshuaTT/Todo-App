@@ -3,9 +3,11 @@ const TodosService = require("./todos.service");
 
 class ListService {
   static async index(userId) {
-    return await List.find({ userId })
-      .populate("category", "title")
-      .populate({ path: "todos", model: "Todo" });
+    const result = await List.find({ userId }).populate({
+      path: "todos",
+      model: "Todo",
+    });
+    return result;
   }
 
   static async create(list, userId) {
@@ -39,17 +41,6 @@ class ListService {
     if (result) return todo;
   }
 
-  static async toggle(listId, userId, todoId) {
-    let list = await List.findOne({ _id: listId, userId: userId });
-
-    let todo = list.todos.find((todo) => todo._id.equals(todoId));
-
-    if (todo) {
-      todo.completed = !todo?.completed;
-      await list.save();
-      return true;
-    } else throw new Error();
-  }
   static async updateCategory(listId, userId, category) {
     return await List.findOneAndUpdate(
       { _id: listId, userId: userId },
